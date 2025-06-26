@@ -1,37 +1,20 @@
 package com.example.bookstoreapp.ui.product.component
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.bookstoreapp.data.Entities.Book
 
 @Composable
@@ -51,10 +34,11 @@ fun ProductsItemComponent(
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
         ) {
-            // Image avec bordure
-            Box(
+            AsyncImage(
+                model = book.image,
+                contentDescription = book.title,
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(4.dp))
@@ -62,22 +46,15 @@ fun ProductsItemComponent(
                         width = 1.dp,
                         color = Color(0xFF5C4D3C),
                         shape = RoundedCornerShape(4.dp)
-                    )
-            ) {
-                Image(
-                    painter = painterResource(id = book.imageResId),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
+                    ),
+                contentScale = ContentScale.Crop
+            )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                // Titre
                 Text(
                     text = book.title,
                     color = Color(0xFFE8D5B5),
@@ -88,7 +65,6 @@ fun ProductsItemComponent(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                // Auteur
                 Text(
                     text = book.author,
                     color = Color(0xFFB8A282),
@@ -97,14 +73,13 @@ fun ProductsItemComponent(
                     modifier = Modifier.padding(top = 4.dp)
                 )
 
-                // Type et quantité
                 Row(
                     modifier = Modifier.padding(top = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp), // Correction ici
-                    verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                 ) {
                     Text(
-                        text = book.type.name.replace("_", " "),
+                        text = book.type.replace("_", " "),
                         color = Color(0xFF8B7C65),
                         fontSize = 12.sp,
                         fontFamily = FontFamily.Serif
@@ -112,18 +87,13 @@ fun ProductsItemComponent(
 
                     Text(
                         text = "• ${book.quantity} dispo",
-                        color = if (book.quantity > 0) {
-                            Color(0xFF8B7C65)
-                        } else {
-                            Color(0xFFD4A373)
-                        },
+                        color = if (book.quantity > 0) Color(0xFF8B7C65) else Color(0xFFD4A373),
                         fontSize = 12.sp,
                         fontFamily = FontFamily.Serif
                     )
                 }
             }
 
-            // Bouton Voir
             Button(
                 onClick = onDetailClick,
                 modifier = Modifier.height(36.dp),

@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.bookstoreapp.ui.product.ProductViewModel
+import com.example.bookstoreapp.ui.product.screens.ProductViewModel
 import com.example.bookstoreapp.ui.product.component.DetailsProductScreen
 import com.example.bookstoreapp.ui.product.screens.HomeScreen
 
@@ -40,9 +40,12 @@ fun AppNavigation(viewModel: ProductViewModel) {
                 }
             )
         ) { backStackEntry ->
-            val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
+            val bookIdString = backStackEntry.arguments?.getString("bookId") ?: return@composable
+            val bookId = bookIdString.toIntOrNull() ?: return@composable
+
+            val book = viewModel.getBookById(bookId) ?: return@composable
             DetailsProductScreen(
-                book = viewModel.getBookById(bookId) ?: return@composable,
+                book = book,
                 onBackClick = { navController.popBackStack() }
             )
         }

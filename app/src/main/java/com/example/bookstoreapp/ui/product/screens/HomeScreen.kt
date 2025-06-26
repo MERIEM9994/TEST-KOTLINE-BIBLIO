@@ -1,32 +1,26 @@
 package com.example.bookstoreapp.ui.product.screens
-import androidx.compose.ui.text.font.FontWeight
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.bookstoreapp.ui.product.ProductIntent
-import com.example.bookstoreapp.ui.product.ProductViewModel
 import com.example.bookstoreapp.ui.product.component.ProductsList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onBookClick: (String) -> Unit,
+    onBookClick: (Int) -> Unit,
     viewModel: ProductViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(ProductIntent.LoadBooks)
-    }
 
     Scaffold(
         topBar = {
@@ -51,8 +45,8 @@ fun HomeScreen(
                 .padding(paddingValues),
             contentAlignment = Alignment.Center
         ) {
-            when {
-                state.isLoading -> Column(
+            when (state) {
+                is ProductViewState.Loading -> Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -60,16 +54,19 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text("Chargement des livres...")
                 }
-                state.error != null -> Text(
-                    text = "Erreur: ${state.error}",
+
+                is ProductViewState.Error -> Text(
+                    text = "Erreur : ${(state as ProductViewState.Error).message}",
                     color = Color.Red,
                     textAlign = TextAlign.Center
                 )
-                else -> ProductsList(
-                    books = state.books,
+
+                is ProductViewState.Success -> ProductsList(
+                    books = (state as ProductViewState.Success).books,
                     onBookClick = onBookClick
                 )
             }
         }
     }
 }
+

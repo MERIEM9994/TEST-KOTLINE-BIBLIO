@@ -1,21 +1,11 @@
 package com.example.bookstoreapp.data.Entities
 
 data class Book(
-    val id: String,
+    val id: Int,
     val title: String,
     val author: String,
+    val type: String,
+    val description: String,
     val quantity: Int,
-    val type: BookType,
-    val imageResId: Int,
-    val publishedYear: Int? = null // Nouveau champ pour l'année de publication
+    val image: String
 )
-
-enum class BookType {
-    ROMAN,
-    POESIE,
-    THEATRE,
-    ESSAI,
-    HISTOIRE
-}
-
-

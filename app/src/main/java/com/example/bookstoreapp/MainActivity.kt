@@ -10,7 +10,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.bookstoreapp.nav.AppNavigation
-import com.example.bookstoreapp.ui.product.ProductViewModel
+
+import com.example.bookstoreapp.ui.product.screens.ProductViewModel
 import com.example.bookstoreapp.ui.theme.BookStoreAppTheme
 
 class MainActivity : ComponentActivity() {

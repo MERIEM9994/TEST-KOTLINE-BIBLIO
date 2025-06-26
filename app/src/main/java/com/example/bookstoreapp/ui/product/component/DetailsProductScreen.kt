@@ -1,6 +1,5 @@
 package com.example.bookstoreapp.ui.product.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,10 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.bookstoreapp.data.Entities.Book
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,13 +51,13 @@ fun DetailsProductScreen(
                 elevation = CardDefaults.cardElevation(8.dp),
                 shape = MaterialTheme.shapes.medium
             ) {
-                Image(
-                    painter = painterResource(id = book.imageResId),
+                AsyncImage(
+                    model = book.image,
                     contentDescription = "Couverture de ${book.title}",
                     modifier = Modifier
                         .height(300.dp)
                         .fillMaxWidth(),
-                    contentScale = ContentScale.FillWidth
+                    contentScale = androidx.compose.ui.layout.ContentScale.FillWidth
                 )
             }
 
@@ -95,7 +93,7 @@ fun DetailsProductScreen(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = book.type.name.replace("_", " "),
+                    text = book.type.replace("_", " "),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -137,3 +135,4 @@ fun DetailsProductScreen(
         }
     }
 }
+

@@ -12,7 +12,7 @@ import com.example.bookstoreapp.data.Entities.Book
 @Composable
 fun ProductsList(
     books: List<Book>,
-    onBookClick: (String) -> Unit
+    onBookClick: (Int) -> Unit  // Ici on attend un Int, pas String
 ) {
     LazyColumn(
         modifier = Modifier
@@ -22,7 +22,7 @@ fun ProductsList(
         items(books) { book ->
             ProductsItemComponent(
                 book = book,
-                onDetailClick = { onBookClick(book.id) }
+                onDetailClick = { onBookClick(book.id) }  // book.id est Int
             )
         }
     }
