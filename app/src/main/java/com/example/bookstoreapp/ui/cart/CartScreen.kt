@@ -14,7 +14,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun CartScreen(
     cartViewModel: CartViewModel = viewModel(),
-    onValidatePayment: () -> Unit
+    onCheckoutClick: () -> Unit,
+    onClearCartClick: () -> Unit
 ) {
     val uiState by cartViewModel.uiState.collectAsState()
 
@@ -73,14 +74,11 @@ fun CartScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        OutlinedButton(onClick = { cartViewModel.clearCart() }) {
+                        OutlinedButton(onClick = onClearCartClick) {
                             Text("Vider le panier")
                         }
 
-                        Button(onClick = {
-                            cartViewModel.confirmPurchase()
-                            onValidatePayment()
-                        }) {
+                        Button(onClick = onCheckoutClick) {
                             Text("Commander")
                         }
                     }
@@ -89,3 +87,4 @@ fun CartScreen(
         }
     }
 }
+

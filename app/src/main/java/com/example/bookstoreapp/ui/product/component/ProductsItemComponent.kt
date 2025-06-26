@@ -73,6 +73,15 @@ fun ProductsItemComponent(
                     modifier = Modifier.padding(top = 4.dp)
                 )
 
+                // 🆕 Prix du livre
+                Text(
+                    text = "Prix : ${book.price} MAD",
+                    color = Color(0xFFB8A282),
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 13.sp,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+
                 Row(
                     modifier = Modifier.padding(top = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),

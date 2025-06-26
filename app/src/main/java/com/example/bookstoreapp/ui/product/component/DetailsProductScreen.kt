@@ -11,14 +11,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.bookstoreapp.data.Entities.Book
+import com.example.bookstoreapp.nav.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsProductScreen(
     book: Book,
-    onBackClick: () -> Unit
+    navController: NavController,              // ✅ Ajouté
+    onBackClick: () -> Unit,
+    onAddToCart: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -46,6 +50,7 @@ fun DetailsProductScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Image
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(8.dp),
@@ -61,6 +66,7 @@ fun DetailsProductScreen(
                 )
             }
 
+            // Titre
             Text(
                 text = book.title,
                 style = MaterialTheme.typography.headlineMedium,
@@ -68,74 +74,68 @@ fun DetailsProductScreen(
                 color = MaterialTheme.colorScheme.primary
             )
 
+            // Auteur
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
-                    text = "Auteur :",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = book.author,
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Text("Auteur :", fontWeight = FontWeight.Bold)
+                Text(book.author)
             }
 
+            // Genre
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
-                    text = "Genre :",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = book.type.replace("_", " "),
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Text("Genre :", fontWeight = FontWeight.Bold)
+                Text(book.type.replace("_", " "))
             }
 
+            // Prix
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(
-                    text = "Disponibilité :",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
+                Text("Prix :", fontWeight = FontWeight.Bold)
+                Text("${book.price} MAD", color = MaterialTheme.colorScheme.secondary)
+            }
+
+            // Disponibilité
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text("Disponibilité :", fontWeight = FontWeight.Bold)
                 Text(
                     text = if (book.quantity > 0) "${book.quantity} exemplaires" else "Rupture de stock",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (book.quantity > 0) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.error
-                    }
+                    color = if (book.quantity > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // ✅ Bouton Ajouter au panier avec navigation
+            Button(
+                onClick = {
+                    onAddToCart()
+                    navController.navigate(Routes.CART)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Ajouter au panier")
+            }
+
             Button(
                 onClick = onBackClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                    .padding(vertical = 16.dp)
             ) {
                 Text("Retour à la liste")
             }
         }
     }
 }
-
-
 
 

@@ -1,8 +1,14 @@
 package com.example.bookstoreapp.ui.cart
+
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.bookstoreapp.data.Api.RetrofitInstance
 import com.example.bookstoreapp.data.Entities.Book
+import com.example.bookstoreapp.data.Entities.OrderItem
+import com.example.bookstoreapp.data.Entities.OrderRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 data class CartItem(
     val book: Book,
@@ -36,11 +42,33 @@ class CartViewModel : ViewModel() {
     }
 
     fun confirmPurchase() {
-        _cartItems.value = _cartItems.value.map {
-            val updatedBook = it.book.copy(quantity = it.book.quantity - it.quantity)
-            CartItem(updatedBook, it.quantity)
+        viewModelScope.launch {
+            try {
+                if (_cartItems.value.isEmpty()) return@launch
+
+                val orderItems = _cartItems.value.map {
+                    OrderItem(id = it.book.id, quantity = it.quantity)
+                }
+
+                val request = OrderRequest(items = orderItems)
+                val response = RetrofitInstance.api.postOrder(request)
+
+                if (response.isSuccessful) {
+                    // Mettre à jour localement le stock
+                    _cartItems.value = _cartItems.value.map {
+                        val updatedBook = it.book.copy(quantity = it.book.quantity - it.quantity)
+                        CartItem(updatedBook, it.quantity)
+                    }
+                    clearCart()  // Vider le panier après succès
+                    println("✅ Commande envoyée avec succès")
+                } else {
+                    println("❌ Échec de la commande : ${response.code()}")
+                }
+
+            } catch (e: Exception) {
+                println("⚠️ Erreur réseau : ${e.localizedMessage}")
+            }
         }
-        updateUiState()
     }
 
     private fun updateUiState() {
@@ -52,3 +80,4 @@ class CartViewModel : ViewModel() {
         }
     }
 }
+
