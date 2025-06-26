@@ -7,5 +7,6 @@ data class Book(
     val type: String,
     val description: String,
     val quantity: Int,
-    val image: String
+    val image: String,
+    val price: Double
 )
