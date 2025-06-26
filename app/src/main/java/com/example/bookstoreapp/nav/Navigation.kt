@@ -9,8 +9,10 @@ import androidx.navigation.navArgument
 import com.example.bookstoreapp.ui.product.screens.ProductViewModel
 import com.example.bookstoreapp.ui.product.component.DetailsProductScreen
 import com.example.bookstoreapp.ui.product.screens.HomeScreen
+import com.example.bookstoreapp.ui.screens.AccueilScreen // 👈 nouveau import
 
 object Routes {
+    const val ACCUEIL = "accueil"
     const val HOME = "home"
     const val BOOK_DETAILS = "bookDetails"
 }
@@ -21,8 +23,14 @@ fun AppNavigation(viewModel: ProductViewModel) {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.HOME
+        startDestination = Routes.ACCUEIL // 👈 on démarre par l'écran d'accueil
     ) {
+        // 👋 Nouvel écran d'accueil
+        composable(Routes.ACCUEIL) {
+            AccueilScreen(navController = navController)
+        }
+
+        // 📚 Liste des livres
         composable(Routes.HOME) {
             HomeScreen(
                 viewModel = viewModel,
@@ -32,6 +40,7 @@ fun AppNavigation(viewModel: ProductViewModel) {
             )
         }
 
+        // 📖 Détails d’un livre
         composable(
             route = "${Routes.BOOK_DETAILS}/{bookId}",
             arguments = listOf(
