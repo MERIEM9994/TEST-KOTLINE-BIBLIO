@@ -13,19 +13,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.bookstoreapp.ui.cart.CartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaiementScreen(
     total: Double,
     onValidatePayment: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    cartViewModel: CartViewModel = viewModel()
 ) {
     val context = LocalContext.current
 
     var fullName by remember { mutableStateOf("") }
     var cardNumber by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableStateOf("") } // On garde un champ simple
+    var expiryDate by remember { mutableStateOf("") }
     var cvv by remember { mutableStateOf("") }
 
     var showSuccess by remember { mutableStateOf(false) }
@@ -89,16 +92,16 @@ fun PaiementScreen(
 
             Button(
                 onClick = {
-                    // Validation simple : on vérifie juste que les champs ne sont pas vides
                     if (
                         fullName.isNotBlank() &&
                         cardNumber.isNotBlank() &&
                         expiryDate.isNotBlank() &&
                         cvv.isNotBlank()
                     ) {
+                        cartViewModel.confirmPurchase() // 🔥 Déclenchement du backend
                         showSuccess = true
                         Toast.makeText(context, "Achat effectué avec succès !", Toast.LENGTH_LONG).show()
-                        onValidatePayment()
+                        onValidatePayment() // 🔄 Navigation après paiement
                     } else {
                         Toast.makeText(context, "Veuillez remplir tous les champs.", Toast.LENGTH_SHORT).show()
                     }
@@ -123,3 +126,4 @@ fun PaiementScreen(
         }
     }
 }
+

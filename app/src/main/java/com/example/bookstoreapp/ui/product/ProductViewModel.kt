@@ -25,7 +25,8 @@ class ProductViewModel : ViewModel() {
         fetchBooks()
     }
 
-    private fun fetchBooks() {
+    //  Rendre cette fonction publique pour pouvoir la rappeler après un achat
+    fun fetchBooks() {
         viewModelScope.launch {
             try {
                 val books = repository.getBooks()
@@ -36,7 +37,6 @@ class ProductViewModel : ViewModel() {
         }
     }
 
-    // Nouvelle fonction pour récupérer un livre par son id
     fun getBookById(id: Int): Book? {
         val currentState = _state.value
         return if (currentState is ProductViewState.Success) {
@@ -46,4 +46,5 @@ class ProductViewModel : ViewModel() {
         }
     }
 }
+
 

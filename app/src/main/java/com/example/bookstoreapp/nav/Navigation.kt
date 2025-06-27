@@ -14,6 +14,7 @@ import com.example.bookstoreapp.ui.screens.AccueilScreen
 import com.example.bookstoreapp.ui.cart.CartScreen
 import com.example.bookstoreapp.ui.cart.CartViewModel
 import com.example.bookstoreapp.ui.cart.payer.PaiementScreen
+import com.example.bookstoreapp.ui.cart.payer.ConfirmationScreen
 
 object Routes {
     const val ACCUEIL = "accueil"
@@ -21,6 +22,7 @@ object Routes {
     const val BOOK_DETAILS = "bookDetails"
     const val CART = "cart"
     const val PAYMENT = "payment"
+    const val CONFIRMATION = "confirmation"
 }
 
 @Composable
@@ -54,11 +56,11 @@ fun AppNavigation(viewModel: ProductViewModel) {
 
             DetailsProductScreen(
                 book = book,
-                navController = navController, // ✅ Passage du navController
+                navController = navController,
                 onBackClick = { navController.popBackStack() },
                 onAddToCart = {
-                    cartViewModel.addToCart(book)       // ✅ ajout au panier
-                    navController.navigate(Routes.CART) // ✅ redirection vers panier
+                    cartViewModel.addToCart(book)
+                    navController.navigate(Routes.CART)
                 }
             )
         }
@@ -86,17 +88,29 @@ fun AppNavigation(viewModel: ProductViewModel) {
             PaiementScreen(
                 total = total,
                 onValidatePayment = {
-                    cartViewModel.confirmPurchase()  // confirmer l'achat
-                    cartViewModel.clearCart()        // vider panier
-                    navController.popBackStack(Routes.HOME, false)
+                    cartViewModel.confirmPurchase()
+                    navController.navigate(Routes.CONFIRMATION)
                 },
                 onBackClick = {
                     navController.popBackStack()
                 }
             )
         }
+
+        composable(Routes.CONFIRMATION) {
+            ConfirmationScreen(
+                onBackToHome = {
+                    viewModel.fetchBooks() // 🔁 Recharge les livres avec les quantités à jour
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.ACCUEIL) { inclusive = false }
+                    }
+                }
+            )
+        }
     }
 }
+
+
 
 
 
