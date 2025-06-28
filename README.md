@@ -33,7 +33,19 @@ nodemon server.js
 ## 📷 Captures d’écran de l'application
 
 Les captures d’écran prises lors des tests de l’application se trouves dans depot server dans public /captures
-le code du kotlin front-end se trouve da
+## Structure du projet
+
+Le code source est organisé en deux dépôts Git distants distincts :
+
+- **Backend**  
+  Le backend (API serveur) se trouve dans le dépôt :  
+  [https://github.com/MERIEM9994/my-kotline-server-api.git](https://github.com/MERIEM9994/my-kotline-server-api.git)  
+  Branche utilisée : `master`
+
+- **Frontend**  
+  Le frontend (application Android Kotlin) est hébergé dans le dépôt :  
+  [https://github.com/MERIEM9994/TEST-KOTLINE-BIBLIO.git](https://github.com/MERIEM9994/TEST-KOTLINE-BIBLIO.git)  
+  Branche utilisée : `main`
 
 
 
