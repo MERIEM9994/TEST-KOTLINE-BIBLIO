@@ -32,8 +32,8 @@ npm install -g nodemon
 nodemon server.js
 ## 📷 Captures d’écran de l'application
 
-Les captures d’écran prises lors des tests de l’application se trouvent dans le répertoire suivant de l’application Android :
-res----->drawable--------->captures
+Les captures d’écran prises lors des tests de l’application se trouves dans depot server dans public /captures
+le code du kotlin front-end se trouve da
 
 
 
