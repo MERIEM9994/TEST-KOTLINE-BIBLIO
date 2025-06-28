@@ -19,7 +19,8 @@ fun RegisterScreen(
     var password by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
 
-    val loginState by viewModel.loginState.collectAsState() // <-- On observe les erreurs ou succès
+    // ✅ C'était loginState, maintenant on utilise bien registerState
+    val registerState by viewModel.registerState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -54,13 +55,15 @@ fun RegisterScreen(
             Text("Créer un compte")
         }
 
-        if (loginState.isError) {
+        // ✅ Affichage du message de retour (succès ou erreur)
+        if (registerState.message.isNotEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = loginState.message,
-                color = MaterialTheme.colorScheme.error
+                text = registerState.message,
+                color = if (registerState.isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
             )
         }
     }
 }
+
 
