@@ -1,59 +1,37 @@
-# BookStoreApp - Application de Gestion de Livres 📚
+# 📚 Merry Bookstore
 
-Une application Android moderne développée avec Jetpack Compose et l'architecture MVI.
+Merry Bookstore est une application mobile Android développée avec **Kotlin** et **Jetpack Compose**. Elle permet de consulter un catalogue de livres, voir les détails de chaque livre, gérer un panier, s'inscrire/se connecter et suivre ses commandes.
 
-## 🚀 Fonctionnalités
-- Affichage d'une liste de livres
-- Fiche détaillée pour chaque livre
-- Gestion des états (chargement, erreur, succès)
-- Navigation entre écrans
-- Design Material 3
+## 🧩 Fonctionnalités principales
 
-## 🏗 Architecture MVI
-### Structure des composants
-```plaintext
-data/
-├── Entities/    # Modèles de données
-│   └── Book.kt
-└── Repository/  # Accès aux données
-    └── BookRepository.kt
+- 📖 Affichage du catalogue de livres
+- 🔍 Vue détaillée avec titre, auteur, type, description, stock
+- 🛒 Gestion de panier
+- 🧑‍💻 Authentification des utilisateurs (login/inscription)
+- 🗂️ Sauvegarde des données via Room
+- 🔌 Récupération des données depuis une API Express locale
+- 🌐 Internationalisation (prévue)
+- 🎨 Thème esthétique : *Dark Academia*
 
-ui/
-├── product/
-│   ├── component/       # Composants UI
-│   │   ├── ProductsList.kt
-│   │   ├── BookItem.kt
-│   │   └── DetailsScreen.kt
-│   ├── screens/         # Écrans
-│   │   └── HomeScreen.kt
-│   ├── ProductIntent.kt # Actions utilisateur
-│   ├── ProductViewModel.kt
-│   └── ProductViewState.kt
+## 🛠️ Technologies utilisées
 
-nav/              # Navigation
-└── Navigation.kt
+- Kotlin & Jetpack Compose
+- Hilt (injection de dépendances)
+- Retrofit (appels API REST)
+- Room (base de données locale)
+- Express.js (API locale avec fichier `books.json`)
+- Material3 (Design moderne)
 
-******************************************************************************************************************************************************************************************
-graph TD
-    A[Intent] --> B(ViewModel)
-    B --> C{ViewState}
-    C --> D[UI]
-    D -->|User Action| A
+## 🚀 Lancer le projet
 
+### Backend (API Express)
+```bash
+npm install -g nodemon
+nodemon server.js
+## 📷 Captures d’écran de l'application
 
+Les captures d’écran prises lors des tests de l’application se trouvent dans le répertoire suivant de l’application Android :
+res----->drawable--------->captures
 
-🛠 Technologies
-Kotlin 100%
-
-Jetpack Compose
-
-Architecture MVI (Model-View-Intent)
-
-Navigation Compose
-
-Material Design 3
-
-StateFlow pour la gestion d'état
-******************************************************************************************************************************************************************************************
 
 
