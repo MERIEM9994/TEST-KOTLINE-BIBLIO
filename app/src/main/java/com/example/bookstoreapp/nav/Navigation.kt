@@ -2,10 +2,9 @@ package com.example.bookstoreapp.nav
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.example.bookstoreapp.ui.product.screens.ProductViewModel
 import com.example.bookstoreapp.ui.product.component.DetailsProductScreen
@@ -15,6 +14,11 @@ import com.example.bookstoreapp.ui.cart.CartScreen
 import com.example.bookstoreapp.ui.cart.CartViewModel
 import com.example.bookstoreapp.ui.cart.payer.PaiementScreen
 import com.example.bookstoreapp.ui.cart.payer.ConfirmationScreen
+import com.example.bookstoreapp.viewmodel.UserViewModel
+import com.example.bookstoreapp.ui.auth.LoginScreen
+import com.example.bookstoreapp.ui.auth.RegisterScreen
+import com.example.bookstoreapp.ui.profile.ProfileScreen
+import com.example.bookstoreapp.ui.admin.AdminDashboard
 
 object Routes {
     const val ACCUEIL = "accueil"
@@ -23,19 +27,54 @@ object Routes {
     const val CART = "cart"
     const val PAYMENT = "payment"
     const val CONFIRMATION = "confirmation"
+    const val LOGIN = "login"
+    const val REGISTER = "register"
+    const val PROFILE = "profile"
+    const val ADMIN_DASHBOARD = "admin_dashboard"
 }
 
 @Composable
-fun AppNavigation(viewModel: ProductViewModel) {
+fun AppNavigation(viewModel: ProductViewModel, userViewModel: UserViewModel = viewModel()) {
     val navController = rememberNavController()
     val cartViewModel = CartViewModel()
+    val userState = userViewModel.currentUser.collectAsState().value
 
     NavHost(
         navController = navController,
         startDestination = Routes.ACCUEIL
     ) {
+
         composable(Routes.ACCUEIL) {
             AccueilScreen(navController = navController)
+        }
+
+        composable(Routes.LOGIN) {
+            LoginScreen(
+                viewModel = userViewModel,
+                onLoginSuccess = {
+                    when (userViewModel.currentUser.value?.role) {
+                        "admin" -> navController.navigate(Routes.ADMIN_DASHBOARD)
+                        else -> navController.navigate(Routes.HOME)
+                    }
+                }
+            )
+        }
+
+        composable(Routes.REGISTER) {
+            RegisterScreen(
+                viewModel = userViewModel,
+                onRegisterSuccess = {
+                    navController.navigate(Routes.LOGIN)
+                }
+            )
+        }
+
+        composable(Routes.PROFILE) {
+            ProfileScreen(userViewModel)
+        }
+
+        composable(Routes.ADMIN_DASHBOARD) {
+            AdminDashboard()
         }
 
         composable(Routes.HOME) {
@@ -100,7 +139,7 @@ fun AppNavigation(viewModel: ProductViewModel) {
         composable(Routes.CONFIRMATION) {
             ConfirmationScreen(
                 onBackToHome = {
-                    viewModel.fetchBooks() // 🔁 Recharge les livres avec les quantités à jour
+                    viewModel.fetchBooks() // recharge stock
                     navController.navigate(Routes.HOME) {
                         popUpTo(Routes.ACCUEIL) { inclusive = false }
                     }
@@ -109,6 +148,7 @@ fun AppNavigation(viewModel: ProductViewModel) {
         }
     }
 }
+
 
 
 
