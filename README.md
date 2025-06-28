@@ -9,6 +9,8 @@ Merry Bookstore est une application mobile Android développée avec **Kotlin** 
 - 🛒 Gestion de panier
 - 🧑‍💻 Authentification des utilisateurs (login/inscription)
 - 🗂️ Sauvegarde des données via Room
+-  💳 Paiement par carte simulé (démo)
+- 🔄 Stock mis à jour automatiquement après validation du paiement
 - 🔌 Récupération des données depuis une API Express locale
 - 🌐 Internationalisation (prévue)
 - 🎨 Thème esthétique : *Dark Academia*
